@@ -10,7 +10,7 @@ import { useState } from "react";
 
 function App() {
 
-  const [tabContent, setTabContent] = useState('components');
+  const [tabContent, setTabContent] = useState();
 
   function handleSelect(selectedButton){
        setTabContent(selectedButton);
@@ -25,16 +25,17 @@ function App() {
         <h2>Time to get started!</h2>
         <section id="core-concepts">
           <ul>
+            {CORE_CONCEPTS.map((concept,key) => (
 
-            <CoreConcept title={CORE_CONCEPTS[0].title} description={CORE_CONCEPTS[0].description} image={CORE_CONCEPTS[0].image} />
+              /*
+               regular way
+              <CoreConcept key={key} title={concept.title} description={concept.description} image={concept.image} />
+              */
 
-            {/* short way to send values as props, they match the keys from the object or array  */}
-            <CoreConcept {...CORE_CONCEPTS[1]} />
+              // shorter way
+              <CoreConcept key={key} {...concept} />
 
-            <CoreConcept {...CORE_CONCEPTS[2]} />
-
-            <CoreConcept title={CORE_CONCEPTS[3].title} description={CORE_CONCEPTS[3].description} image={CORE_CONCEPTS[3].image} />
-
+            ))}
           </ul>
         </section>
 
@@ -47,16 +48,18 @@ function App() {
             <TabButton onSelect={()=>handleSelect('state')}>State</TabButton>
           </menu>
           
-          <div id="tab-content">
-            <h3>{EXAMPLES[tabContent].title}</h3>
-            <p>{EXAMPLES[tabContent].description}</p>
-            <pre>
-              <code>
-                {EXAMPLES[tabContent].code}
-              </code>
-            </pre>
-          </div>
-          {tabContent}
+
+         {!tabContent ? <p>Please select a button</p> : (
+            <div id="tab-content">
+              <h3>{EXAMPLES[tabContent].title}</h3>
+              <p>{EXAMPLES[tabContent].description}</p>
+              <pre>
+                <code>
+                  {EXAMPLES[tabContent].code}
+                </code>
+              </pre>
+            </div>
+          )}
         </section>
       </main>
     </div>
